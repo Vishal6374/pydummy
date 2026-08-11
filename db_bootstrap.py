@@ -8,23 +8,38 @@ def install_package(package):
     except subprocess.CalledProcessError:
         subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
-# Check dependencies
+# Check dependencies and ensure user site-packages path is loaded
+import site
+import importlib
+
+def force_path_refresh():
+    user_site = site.getusersitepackages()
+    if user_site not in sys.path:
+        sys.path.append(user_site)
+    importlib.invalidate_caches()
+
 try:
     import django
+    if django.VERSION[0] >= 5:
+        raise ImportError
 except ImportError:
-    install_package("django")
+    install_package("django<5.0")
+    force_path_refresh()
 
 try:
     import pymysql
 except ImportError:
     install_package("pymysql")
+    force_path_refresh()
 
 try:
     import cryptography
 except ImportError:
     install_package("cryptography")
+    force_path_refresh()
 
 import pymysql
+
 
 def create_database():
     connection = None
