@@ -3,7 +3,10 @@ import subprocess
 
 def install_package(package):
     print(f"Installing {package}...")
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package, "--break-system-packages"])
+    except subprocess.CalledProcessError:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
 # Check dependencies
 try:
