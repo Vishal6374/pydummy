@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TaskFlow - Task Management{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="{% url 'dashboard' %}" class="brand">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke: #6366F1;">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                TaskFlow
+            </a>
+            <div class="nav-actions">
+                {% if user.is_authenticated %}
+                    <span class="user-tag">Logged in as <strong>{{ user.username }}</strong></span>
+                    <a href="{% url 'logout' %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="action-link">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 TaskFlow Manager. Built with Django ORM &amp; MySQL. All rights reserved.</p>
+    </footer>
+</body>
+</html>
